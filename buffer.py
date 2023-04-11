@@ -1,0 +1,2 @@
+class MemoryBuffer:
+    history = []
