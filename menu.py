@@ -1,19 +1,24 @@
 from encrypt import Encryptor, Decryptor, Cipher
 from buffer import MemoryBuffer
 from filehandler import FileHandler
+from typing import List, Dict, Tuple
 
 
 class Executor:
-    def execute(self, cypher_type, text, shift):
+    def execute(self, cypher_type: int, text: str, shift: int) -> List[Dict[int, str]]:
+        """
+        Perform encryption or decryption based on user's choice and store information about it. Return history of
+        operations.
+        """
         rot_types = {1: 13, 2: 47}
         if shift in rot_types.keys():
             shift = rot_types[shift]
 
-        def encrypt(text, shift):
+        def encrypt(text: str, shift: int) -> Tuple[str, str]:
             encryptor = Encryptor(shift)
             return 'encrypted', encryptor.cypher(text)
 
-        def decrypt(text, shift):
+        def decrypt(text: str, shift: int) -> Tuple[str, str]:
             decryptor = Decryptor(shift)
             return 'decrypted', decryptor.cypher(text)
 
@@ -24,16 +29,18 @@ class Executor:
         data = {'id': Cipher.id, 'text': text, 'status': status, 'rot_type': f'ROT{shift}'}
         MemoryBuffer.history.append(data)
 
-        print(MemoryBuffer.history)
+        print(data['text'])
+
         return MemoryBuffer.history
 
 
 class Menu:
-    def __init__(self):
-        self.executor = Executor()
-        self.running = True
+    def __init__(self) -> None:
+        self.executor: Executor = Executor()
+        self.running: bool = True
 
-    def show_menu(self):
+    def show_menu(self) -> None:
+        """Display menu and interact with the user."""
         while self.running:
             text = input('Enter your text:\n')
             cypher_type = int(input('Choose:\n1 – to encrypt your text\n2 – to decrypt your text\n'))
