@@ -1,9 +1,15 @@
 from menu import Menu
 
 
+class Manager:
+    @staticmethod
+    def run():
+        menu = Menu()
+        menu.show_menu()
+
+
 def main():
-    menu = Menu()
-    menu.show_menu()
+    Manager.run()
 
 
 if __name__ == '__main__':
