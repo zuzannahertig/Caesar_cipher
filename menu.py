@@ -5,33 +5,40 @@ from typing import List, Dict, Tuple
 
 
 class Executor:
-    def execute(self, cypher_type: int, text: str, shift: int) -> List[Dict[int, str]]:
-        """
-        Perform encryption or decryption based on user's choice and store information about it. Return history of
-        operations.
-        """
+    @staticmethod
+    def map_rot_type(shift: int) -> int:
+        """Return ROT type based on user's choice."""
         rot_types = {1: 13, 2: 47}
         if shift in rot_types.keys():
-            shift = rot_types[shift]
+            return rot_types[shift]
+        else:
+            return shift
 
-        def encrypt(text: str, shift: int) -> Tuple[str, str]:
-            encryptor = Encryptor(shift)
-            return 'encrypted', encryptor.cypher(text)
+    @staticmethod
+    def encrypt(text: str, shift: int) -> Tuple[str, str]:
+        """Return status and encrypted text."""
+        encryptor = Encryptor(shift)
+        return 'encrypted', encryptor.cypher(text)
 
-        def decrypt(text: str, shift: int) -> Tuple[str, str]:
-            decryptor = Decryptor(shift)
-            return 'decrypted', decryptor.cypher(text)
+    @staticmethod
+    def decrypt(text: str, shift: int) -> Tuple[str, str]:
+        """Return status and decrypted text."""
+        decryptor = Decryptor(shift)
+        return 'decrypted', decryptor.cypher(text)
 
-        options = {1: encrypt,
-                   2: decrypt}
+    def execute(self, cypher_type: int, text: str, shift: int) -> str:
+        """Execute user's choice and save information about it."""
+        shift = self.map_rot_type(shift)
+
+        options = {1: self.encrypt,
+                   2: self.decrypt}
 
         status, text = options.get(cypher_type)(text, shift)
         data = {'id': Cipher.id, 'text': text, 'status': status, 'rot_type': f'ROT{shift}'}
         MemoryBuffer.history.append(data)
 
         print(data['text'])
-
-        return MemoryBuffer.history
+        return data['text']
 
 
 class Menu:
