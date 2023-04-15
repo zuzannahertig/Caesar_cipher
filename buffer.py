@@ -1,21 +1,23 @@
-from typing import List
-from dataclasses import dataclass
+from typing import List, Dict
+from dataclasses import dataclass, asdict
 
 
 @dataclass
 class Text:
-    id: int
     text: str
     status: str
     rot_type: str
 
 
 class MemoryBuffer:
-    history: List[Text] = []
+    memory: List[Text] = []
 
     @staticmethod
-    def add(data: Text):
-        MemoryBuffer.history.append(data)
+    def add(data: Text) -> None:
+        """Add information about session to the buffer."""
+        MemoryBuffer.memory.append(data)
 
-    # def return_buffer_as_dict(self):
-    # return []
+    @staticmethod
+    def return_buffer_as_dict(memory) -> List[Dict[str, ...]]:
+        """Return memory as list of dicts."""
+        return [asdict(entry) for entry in memory]
