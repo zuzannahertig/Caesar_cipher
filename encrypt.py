@@ -1,22 +1,20 @@
-from abc import ABC, abstractmethod
 import string
-from typing import List
+from typing import List, Tuple
 import warnings
 from exceptions import TextNotEncrypted
 
 
-class Cipher(ABC):
+class Cipher:
     CHARACTERS: List[str] = [
         string.ascii_lowercase,
         string.ascii_uppercase,
         string.punctuation,
     ]
     characters_joined: str = "".join(CHARACTERS)
-    id = 0
 
-    def __init__(self, shift: int) -> None:
+    def __init__(self, shift: int, encryptor: bool) -> None:
         self._shift = shift
-        Cipher.id += 1
+        self.encryptor = encryptor
 
     @property
     def shift(self) -> int:
@@ -38,49 +36,22 @@ class Cipher(ABC):
     def shift_characters(self, characters: str) -> str:
         """Return list of characters shifted by chosen value."""
         self.shift %= 26
-        return characters[self.shift :] + characters[: self.shift]
+        return characters[self.shift:] + characters[:self.shift]
 
     def shift_alphabets(self) -> str:
         """Return string of shifted characters."""
         shifted = [self.shift_characters(character) for character in self.CHARACTERS]
         return "".join(shifted)
 
-    @abstractmethod
-    def cypher(self, text: str) -> str:
+    def cypher(self, text: str) -> Tuple[str, str]:
         """Encrypt or decrypt text."""
-        raise NotImplementedError
-
-
-class Encryptor(Cipher):
-    def __init__(self, shift: int) -> None:
-        super().__init__(shift)
-
-    def cypher(self, text: str) -> str:
-        """Encrypt text."""
         final_shifted_alphabet = self.shift_alphabets()
-        table = str.maketrans(self.characters_joined, final_shifted_alphabet)
-        return text.translate(table)
+        if self.encryptor:
+            table = str.maketrans(self.characters_joined, final_shifted_alphabet)
+            status = 'encrypted'
+        else:
+            table = str.maketrans(final_shifted_alphabet, self.characters_joined)
+            status = 'decrypted'
+        return status, text.translate(table)
 
 
-class Decryptor(Cipher):
-    def __init__(self, shift: int) -> None:
-        super().__init__(shift)
-
-    def cypher(self, text: str) -> str:
-        """Decrypt text."""
-        final_shifted_alphabet = self.shift_alphabets()
-        table = str.maketrans(final_shifted_alphabet, self.characters_joined)
-        return text.translate(table)
-
-
-def main():
-    encryptor = Encryptor(3)
-    encrypted = encryptor.cypher("Hello, hello!")
-    print(encrypted)
-    decryptor = Decryptor(3)
-    decrypted = decryptor.cypher(encrypted)
-    print(decrypted)
-
-
-if __name__ == "__main__":
-    main()
