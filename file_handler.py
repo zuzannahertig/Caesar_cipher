@@ -5,7 +5,6 @@ from buffer import MemoryBuffer
 
 
 class FileHandler:
-
     @staticmethod
     def write_to_file(file_name: str, data: List[Dict[str, ...]]) -> None:
         """Write data to JSON file."""
@@ -27,8 +26,10 @@ class FileHandler:
         """Save information from current session in JSON file."""
         file_name = input("Name of the file: ")
         if os.path.exists(f"{file_name}.json"):
-            FileHandler.append_to_file(file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory))
+            FileHandler.append_to_file(
+                file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory)
+            )
         else:
-            FileHandler.write_to_file(file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory))
-
-
+            FileHandler.write_to_file(
+                file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory)
+            )
