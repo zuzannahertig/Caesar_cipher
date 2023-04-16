@@ -1,8 +1,9 @@
-from manager import Manager
+from manage import Manager
 
 
 def main():
-    Manager.run()
+    manager = Manager()
+    manager.run()
 
 
 if __name__ == "__main__":
