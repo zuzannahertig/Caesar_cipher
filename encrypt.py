@@ -1,7 +1,7 @@
 import string
 from typing import List, Tuple
 import warnings
-from exceptions import TextNotEncrypted
+from custom_warnings import TextNotEncrypted
 
 
 class Cipher:
@@ -36,22 +36,20 @@ class Cipher:
     def shift_characters(self, characters: str) -> str:
         """Return list of characters shifted by chosen value."""
         self.shift %= 26
-        return characters[self.shift:] + characters[:self.shift]
+        return characters[self.shift :] + characters[: self.shift]
 
     def shift_alphabets(self) -> str:
         """Return string of shifted characters."""
         shifted = [self.shift_characters(character) for character in self.CHARACTERS]
         return "".join(shifted)
 
-    def cypher(self, text: str) -> Tuple[str, str]:
+    def encipher(self, text: str) -> Tuple[str, str]:
         """Encrypt or decrypt text."""
         final_shifted_alphabet = self.shift_alphabets()
         if self.encryptor:
             table = str.maketrans(self.characters_joined, final_shifted_alphabet)
-            status = 'encrypted'
+            status = "encrypted"
         else:
             table = str.maketrans(final_shifted_alphabet, self.characters_joined)
-            status = 'decrypted'
+            status = "decrypted"
         return status, text.translate(table)
-
-
