@@ -1,53 +1,70 @@
-from encrypt import Encryptor, Decryptor, Cipher
-from buffer import MemoryBuffer
-from filehandler import FileHandler
-from typing import List, Dict, Tuple
-import os.path
-from dataclasses import dataclass, asdict
+import warnings
+from custom_warnings import EnteredEmptyString
 
 
 class Menu:
-    def __init__(self) -> None:
-        self.executor: Executor = Executor()
-        self.running: bool = True
+    @staticmethod
+    def show_start() -> None:
+        """Display information about the program."""
+        print(
+            "This program lets you encrypt any text using Caesar cipher.\n"
+            "The default settings are: encryption and ROT13 algorithm, but you can change them at any time.\n"
+        )
 
-    def show_menu(self) -> None:
-        """Display menu and interact with the user."""
-        while self.running:
-            text = input("Enter your text:\n")
-            cypher_type = int(
-                input("Choose:\n1 – to encrypt your text\n2 – to decrypt your text\n")
+    @staticmethod
+    def show_options() -> None:
+        """Display options."""
+        print(
+            "Choose:\n"
+            "1 – to enter the text\n"
+            "2 – to change the default settings\n"
+            "3 – to save the data and quit\n"
+            "4 – to quit without saving.\n"
+        )
+
+    @staticmethod
+    def show_settings_cipher_type() -> None:
+        """Display available cipher types."""
+        print("Choose:\n" "1 – to encrypt\n" "2 – to decrypt\n")
+
+    @staticmethod
+    def show_settings_rot() -> None:
+        """Display available ROT types."""
+        print(
+            "Choose:\n"
+            "1 – to choose ROT13 algorithm\n"
+            "2 – to choose ROT47 algorithm\n"
+            "3 – to set algorithm's shift\n"
+        )
+
+    @staticmethod
+    def invalid_answer(operation: str) -> None:
+        """Display invalid answer message."""
+        print(
+            f"Invalid option chosen for {operation}. Please choose one of the available options."
+        )
+
+    @staticmethod
+    def enter_text() -> str:
+        """Enter text to encipher."""
+        text = input("Enter your text:\n")
+        text = text.strip()
+        if len(text) == 0:
+            warnings.warn(
+                "Empty string cannot be enciphered.",
+                EnteredEmptyString,
             )
-            rot_type = int(
-                input(
-                    "Choose ROT type:\n1 – ROT13\n2 – ROT47\n3 – I want to enter my type of ROT (a "
-                    "number)\n"
-                )
-            )
-            if rot_type == 3:
-                rot_type = int(input("Enter your type of ROT:\n"))
+        return text
 
-            self.executor.execute(cypher_type=cypher_type, text=text, shift=rot_type)
-
-            answer = input("Do you want to enter another text? y/n\n")
-            if answer == "y":
-                continue
-            elif answer == "n":
-                save = input("Do you want to save your data? y/n\n")
-                if save == "y":
-                    file_name = input("Name of the file: ")
-                    if os.path.exists(f"{file_name}.json"):
-                        FileHandler.append_to_file(file_name, MemoryBuffer.history)
-                    else:
-                        FileHandler.write_to_file(file_name, MemoryBuffer.history)
-                self.running = False
-            else:
-                raise ValueError("Invalid answer.")
+    @staticmethod
+    def choose() -> str:
+        """Enter your choice."""
+        return input()
 
 
 def main():
     menu = Menu()
-    menu.show_menu()
+    menu.show_start()
 
 
 if __name__ == "__main__":
