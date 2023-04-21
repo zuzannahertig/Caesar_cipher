@@ -1,5 +1,6 @@
-import warnings
-from custom_warnings import EnteredEmptyString
+from warnings import warn
+
+from features.custom_warnings import EnteredEmptyString
 
 
 class Menu:
@@ -50,7 +51,7 @@ class Menu:
         text = input("Enter your text:\n")
         text = text.strip()
         if len(text) == 0:
-            warnings.warn(
+            warn(
                 "Empty string cannot be enciphered.",
                 EnteredEmptyString,
             )
@@ -59,13 +60,5 @@ class Menu:
     @staticmethod
     def choose() -> str:
         """Enter your choice."""
-        return input()
-
-
-def main():
-    menu = Menu()
-    menu.show_start()
-
-
-if __name__ == "__main__":
-    main()
+        answer = input()
+        return answer.strip()

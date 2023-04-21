@@ -1,4 +1,4 @@
-from manage import Manager
+from features.manage import Manager
 
 
 def main():

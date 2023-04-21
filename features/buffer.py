@@ -17,7 +17,6 @@ class MemoryBuffer:
         """Add information about session to the buffer."""
         MemoryBuffer.memory.append(data)
 
-    @staticmethod
-    def return_buffer_as_dict(memory) -> List[Dict[str, ...]]:
+    def return_buffer_as_dict(self) -> List[Dict[str, str]]:
         """Return memory as list of dicts."""
-        return [asdict(entry) for entry in memory]
+        return [asdict(entry) for entry in self.memory]

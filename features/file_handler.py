@@ -1,10 +1,13 @@
 import json
-from typing import Dict, List
 import os
-from buffer import MemoryBuffer
+from typing import Dict, List
+
+from features.buffer import MemoryBuffer
 
 
 class FileHandler:
+    buffer = MemoryBuffer()
+
     @staticmethod
     def write_to_file(file_name: str, data: List[Dict[str, ...]]) -> None:
         """Write data to JSON file."""
@@ -21,8 +24,7 @@ class FileHandler:
             json.dump(existing_data, file)
             file.truncate()
 
-    @staticmethod
-    def save_data() -> None:
+    def save_data(self) -> None:
         """Save information from current session in JSON file."""
         max_length = 50
         file_name = input(f"Name of the file (max {max_length} characters): ")
@@ -31,12 +33,8 @@ class FileHandler:
             file_name = input(f"Invalid name. Enter new one: ")
 
         if os.path.exists(f"{file_name}.json"):
-            FileHandler.append_to_file(
-                file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory)
-            )
+            FileHandler.append_to_file(file_name, self.buffer.return_buffer_as_dict())
             print(f"Data has been saved to existing file: {file_name}.json")
         else:
-            FileHandler.write_to_file(
-                file_name, MemoryBuffer.return_buffer_as_dict(MemoryBuffer.memory)
-            )
+            FileHandler.write_to_file(file_name, self.buffer.return_buffer_as_dict())
             print(f"Data has been saved to new file: {file_name}.json")

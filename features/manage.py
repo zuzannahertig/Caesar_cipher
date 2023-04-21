@@ -1,8 +1,9 @@
 from __future__ import annotations
-from encrypt import Cipher
-from buffer import MemoryBuffer, Text
+
+from features.buffer import MemoryBuffer, Text
+from features.encrypt import Cipher
+from features.file_handler import FileHandler
 from menu import Menu
-from file_handler import FileHandler
 
 
 class Mapper:
@@ -10,7 +11,7 @@ class Mapper:
         self.manager = manager
 
     def map_actions(self, choice: str) -> None:
-        """Map user's input choice to corresponding method and run it."""
+        """Map user's choice to corresponding method and run it."""
         options = {
             "1": self.manager.execute_default_path,
             "2": self.manager.change_settings,
@@ -25,7 +26,7 @@ class Mapper:
         options.get(choice)()
 
     @staticmethod
-    def map_rot_type(shift: str) -> str:
+    def map_rot_type(shift: str) -> str | int:
         """Return ROT type based on user's choice."""
         rot_types = {"1": 13, "2": 47}
 
@@ -38,8 +39,8 @@ class Mapper:
 
         if shift in rot_types.keys():
             return rot_types[shift]
-        else:
-            return shift
+
+        return int(shift)
 
     @staticmethod
     def map_cipher_type(cipher_type: str) -> bool:
@@ -60,6 +61,7 @@ class Manager:
     def __init__(self) -> None:
         self.running: bool = True
         self.cipher: Cipher = Cipher(Manager.default_shift, Manager.default_encryptor)
+        self.file_handler = FileHandler()
 
     def save_and_display_data(self, text: str, status: str):
         """Keep information about enciphered string and display the result."""
@@ -81,15 +83,6 @@ class Manager:
         status, text = self.cipher.encipher(text)
         self.save_and_display_data(text, status)
 
-    def quit(self) -> None:
-        """Quit the program."""
-        self.running = False
-
-    def save_and_quit(self) -> None:
-        """Save results and quit the program."""
-        FileHandler.save_data()
-        self.quit()
-
     def change_settings(self) -> None:
         """Change default settings."""
         Menu.show_settings_cipher_type()
@@ -107,3 +100,12 @@ class Manager:
             choice = Menu.choose()
             mapper = Mapper(self)
             mapper.map_actions(choice)
+
+    def save_and_quit(self) -> None:
+        """Save results and quit the program."""
+        self.file_handler.save_data()
+        self.quit()
+
+    def quit(self) -> None:
+        """Quit the program."""
+        self.running = False

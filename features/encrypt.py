@@ -1,7 +1,7 @@
 import string
 from typing import List, Tuple
 import warnings
-from custom_warnings import TextNotEncrypted
+from features.custom_warnings import TextNotEncrypted
 
 
 class Cipher:
@@ -34,7 +34,7 @@ class Cipher:
         self._shift = value
 
     def shift_characters(self, characters: str) -> str:
-        """Return list of characters shifted by chosen value."""
+        """Return characters shifted by chosen value."""
         self.shift %= 26
         return characters[self.shift :] + characters[: self.shift]
 
