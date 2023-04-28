@@ -1,5 +1,6 @@
 # Caesar cipher
 * [General info](#general-info)
+* [Technologies](#technologies)
 * [Setup](#setup)
 
 ## General info
@@ -10,6 +11,13 @@ The program uses the <b>Caesar cipher</b>, a simple encryption technique that su
 The user can encrypt and decrypt text with a <b>customizable shift value</b> (ROT13, ROT47, or any other shift). The program will apply the selected transformation to the input text, and output the result.
 
 The program provides the ability to <b>save information</b> from each session to a JSON file, or append it to existing one for future reference.
+
+## Technologies
+<ul>
+<li>Python 3.11.2</li>
+<li>Pytest 7.3.1</li>
+<li>PyYAML 6.0</li>
+</ul>
 
 ## Setup
 To run this program, clone the repository and install dependencies:
