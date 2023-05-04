@@ -16,7 +16,6 @@ The program provides the ability to <b>save information</b> from each session to
 <ul>
 <li>Python 3.11.2</li>
 <li>Pytest 7.3.1</li>
-<li>PyYAML 6.0</li>
 </ul>
 
 ## Setup
