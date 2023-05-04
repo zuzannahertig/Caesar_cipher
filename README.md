@@ -22,5 +22,7 @@ The program provides the ability to <b>save information</b> from each session to
 To run this program, clone the repository and install dependencies:
 ```
 git clone https://github.com/zuzannahertig/Caesar_cipher.git
+```
+```
 pip install -r requirements.txt
 ```
