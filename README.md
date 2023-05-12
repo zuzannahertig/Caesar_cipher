@@ -4,7 +4,6 @@
 * [Setup](#setup)
 
 ## General info
-<br>
 
 The program uses the <b>Caesar cipher</b>, a simple encryption technique that substitutes each letter in the plaintext with a letter a fixed number of positions down the alphabet, to <b>encrypt and decrypt text</b> with a customizable shift value. 
 
